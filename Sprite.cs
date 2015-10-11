@@ -11,8 +11,6 @@ namespace SpriteGenerator {
     private const int ERROR_NO_FILES = 3;
     private const int ERROR_NO_IMAGES = 4;
 
-    private const string SPRITE_ALIGNMENT = "Vertical";
-
     private List<string> imageFileNames;
     private List<Image> images;
 
@@ -77,12 +75,12 @@ namespace SpriteGenerator {
       spriteSize.Height = height;
     }
 
-    public Image Generate() {
+    public Image Generate(string alignment) {
 
       Size finalSize = spriteSize;
       int xOffset = 0, yOffset = 0;
 
-      if (SPRITE_ALIGNMENT == "Horizontal") {
+      if (alignment == "Horizontal") {
         finalSize.Width = spriteSize.Width * images.Count;
         finalSize.Height = spriteSize.Height;
         xOffset = spriteSize.Width;
