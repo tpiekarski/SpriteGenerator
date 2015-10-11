@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
 
 namespace SpriteGenerator {
@@ -15,13 +14,13 @@ namespace SpriteGenerator {
     private const string SPRITE_ALIGNMENT = "Horizontal";
 
     private List<string> imageFileNames;
-    private List<Image> bitmaps;
+    private List<Image> images;
 
-    private Bitmap spriteBitmap;
+    private Image spriteImage;
     private Size spriteSize;
 
     public Sprite() {
-      bitmaps = new List<Image>();
+      images = new List<Image>();
       spriteSize = new Size(0, 0);
     }
 
@@ -57,11 +56,11 @@ namespace SpriteGenerator {
         if (spriteSize.IsEmpty)
           AllocateSize(currentImage.Width, currentImage.Height);
 
-        bitmaps.Add(currentImage);
+        images.Add(currentImage);
         
       }
 
-      if (bitmaps.Count == 0) {
+      if (images.Count == 0) {
         sb.AppendLine("No image files for generating sprite, aborting");
         returnMessage = sb.ToString();
 
@@ -78,26 +77,28 @@ namespace SpriteGenerator {
       spriteSize.Height = height;
     }
 
-    public Bitmap Generate() {
+    public Image Generate() {
 
       Size finalSize = spriteSize;
 
       if (SPRITE_ALIGNMENT == "Horizontal") {
-        finalSize.Width = spriteSize.Width * bitmaps.Count;
+        finalSize.Width = spriteSize.Width * images.Count;
         finalSize.Height = spriteSize.Height;
       }
       else {
         finalSize.Width = spriteSize.Width;
-        finalSize.Height = spriteSize.Height * bitmaps.Count;
+        finalSize.Height = spriteSize.Height * images.Count;
       }
 
 
-      spriteBitmap = new Bitmap(finalSize.Width, finalSize.Height);
+      spriteImage = new Bitmap(finalSize.Width, finalSize.Height);
+      Graphics gfx = Graphics.FromImage(spriteImage);
 
-      // todo: generate the sprite
+      for (int x = 0, n = 0; x <= finalSize.Width - spriteSize.Width; x += spriteSize.Width, n++) {
+        gfx.DrawImage(images[n], x, 0);
+      }
 
-      return spriteBitmap;
-      
+      return spriteImage;
     }
 
   }
