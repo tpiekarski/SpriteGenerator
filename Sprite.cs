@@ -11,7 +11,7 @@ namespace SpriteGenerator {
     private const int ERROR_NO_FILES = 3;
     private const int ERROR_NO_IMAGES = 4;
 
-    private const string SPRITE_ALIGNMENT = "Horizontal";
+    private const string SPRITE_ALIGNMENT = "Vertical";
 
     private List<string> imageFileNames;
     private List<Image> images;
@@ -80,22 +80,28 @@ namespace SpriteGenerator {
     public Image Generate() {
 
       Size finalSize = spriteSize;
+      int xOffset = 0, yOffset = 0;
 
       if (SPRITE_ALIGNMENT == "Horizontal") {
         finalSize.Width = spriteSize.Width * images.Count;
         finalSize.Height = spriteSize.Height;
+        xOffset = spriteSize.Width;
       }
       else {
         finalSize.Width = spriteSize.Width;
         finalSize.Height = spriteSize.Height * images.Count;
+        yOffset = spriteSize.Height;
       }
-
 
       spriteImage = new Bitmap(finalSize.Width, finalSize.Height);
       Graphics gfx = Graphics.FromImage(spriteImage);
 
-      for (int x = 0, n = 0; x <= finalSize.Width - spriteSize.Width; x += spriteSize.Width, n++) {
-        gfx.DrawImage(images[n], x, 0);
+      int x, y, n;
+      int xMax = finalSize.Width - spriteSize.Width;
+      int yMax = finalSize.Height - spriteSize.Height;
+
+      for (x = 0, y = 0, n = 0; x <= xMax && y <= yMax; x += xOffset, y +=yOffset, n++) {
+        gfx.DrawImage(images[n], x, y);
       }
 
       return spriteImage;
