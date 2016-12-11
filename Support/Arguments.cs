@@ -30,24 +30,28 @@ namespace SpriteGenerator.Support {
 
           case "-d":
           case "--directory":
+          case "/D":
 
             directoryName = arguments.GetValue(n + 1).ToString();
             break;
 
           case "-f":
           case "--file":
+          case "/F":
 
             spriteFileName = arguments.GetValue(n + 1).ToString();
             break;
 
           case "-h":
           case "--horizontal":
+          case "/H":
 
             alignment = "Horizontal";
             break;
 
           case "-v":
           case "--vertical":
+          case "/V":
 
             alignment = "Vertical";
             break;
